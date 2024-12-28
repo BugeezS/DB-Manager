@@ -7,9 +7,9 @@ export interface User {
 // The User interface is used to define the shape of the user object that is stored in the context.
 export interface AuthContextType {
   user: User | null;
+  register: (email: string, password: string) => Promise<void>;
   login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
-  register: (email: string, password: string) => Promise<void>;
 }
 // The AuthContextType interface is used to define the shape of the context object that is returned by the useAuth hook.
 export interface AuthProviderProps {

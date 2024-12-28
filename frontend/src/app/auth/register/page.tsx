@@ -1,5 +1,4 @@
 "use client";
-
 import { useAuth } from "@/context/authContext";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -25,6 +24,9 @@ export default function RegisterPage() {
       }
 
       await register(email, password);
+
+      // Added log to confirm if redirection is happening correctly
+      console.log("Registration successful, redirecting...");
       router.push("/auth/login");
     } catch (error) {
       console.error("Registration failed:", error);
