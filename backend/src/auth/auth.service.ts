@@ -2,12 +2,14 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcryptjs';
-// The AuthService class is decorated with the @Injectable decorator to define it as a service.
+import { PrismaService } from '../prisma/prisma.service';
 @Injectable()
-// The AuthService class is exported to be used in other parts of the application.
 export class AuthService {
-  // The constructor injects the JwtService class.
-  constructor(private jwtService: JwtService) {}
+  constructor(
+    private jwtService: JwtService,
+    private prisma: PrismaService,
+  ) {}
+
   // The login method is defined to authenticate a user by username and password.
   async login(username: string, password: string) {
     const user = await this.findUserByUsername(username);
@@ -19,5 +21,11 @@ export class AuthService {
     throw new Error('Invalid login');
   }
   //TODO: Implement the findUserByUsername method to find a user by username.
-  private async findUserByUsername(username: string) {}
+  private async findUserByUsername(username: string) {
+    return await this.prisma.user.findUnique({
+      where: {
+        username,
+      },
+    });
+  }
 }
