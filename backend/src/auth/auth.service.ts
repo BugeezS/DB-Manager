@@ -20,6 +20,17 @@ export class AuthService {
     }
     throw new Error('Invalid login');
   }
+
+  async register(username: string, password: string) {
+    const hashedPassword = bcrypt.hashSync(password, 10);
+    return await this.prisma.user.create({
+      data: {
+        username,
+        password: hashedPassword,
+      },
+    });
+  }
+
   //TODO: Implement the findUserByUsername method to find a user by username.
   private async findUserByUsername(username: string) {
     return await this.prisma.user.findUnique({

@@ -12,6 +12,11 @@ export class AuthController {
   async login(@Body() body: { username: string; password: string }) {
     return this.authService.login(body.username, body.password);
   }
+  // The register method is a POST route that receives a username and password in the request body.
+  @Post('register')
+  async register(@Body() body: { username: string; password: string }) {
+    return this.authService.register(body.username, body.password);
+  }
 
   // The logout method is a POST route that logs out the user.
   @Post('logout')
