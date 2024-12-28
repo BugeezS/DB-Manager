@@ -37,31 +37,38 @@ export default function RegisterPage() {
   };
 
   return (
-    <form onSubmit={handleRegister} className="flex flex-col gap-4 p-4">
-      {error && <div className="text-red-500">{error}</div>}
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        required
-        className="p-2 border rounded text-black"
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        required
-        className="p-2 border rounded text-black"
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <button
-        type="submit"
-        disabled={loading}
-        className="p-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:bg-gray-400"
+    // Added form tag to handle form submission
+    <div className="flex justify-center items-center h-screen">
+      <form
+        onSubmit={handleRegister}
+        className="flex flex-col gap-4 p-4 font-bold"
       >
-        {loading ? "Registering..." : "Register"}
-      </button>
-    </form>
+        <h1 className="text-blue-600 text-4xl text-center">REGISTER</h1>
+        {error && <div className="text-red-500">{error}</div>}
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          required
+          className="p-2 border rounded text-black"
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          required
+          className="p-2 border rounded text-black"
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <button
+          type="submit"
+          disabled={loading}
+          className="p-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:bg-gray-400"
+        >
+          {loading ? "Registering..." : "Register"}
+        </button>
+      </form>
+    </div>
   );
 }
