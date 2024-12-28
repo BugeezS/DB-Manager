@@ -24,7 +24,7 @@ export default function LoginPage() {
       const response = await login?.(email, password);
 
       if (response?.access_token) {
-        localStorage.setItem("token", response.access_token);
+        document.cookie = `token=${response.access_token}; path=/;`;
         console.log("Login successful, token:", response.access_token);
         router.push("/dashboard");
       } else {
