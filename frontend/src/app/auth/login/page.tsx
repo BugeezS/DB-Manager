@@ -7,11 +7,21 @@ export default function LoginPage() {
   const { login } = useAuth() || {};
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [token, setToken] = useState("");
   // The email and password state variables are initialized with empty strings.
   const handleLogin = async () => {
     // The handleLogin function is defined to handle the login process.
     try {
-      await login?.(email, password);
+      console.log(email, password);
+
+      const response = await login?.(email, password);
+      console.log(response, "response");
+
+      if (response) {
+        localStorage.setItem("token", response.access_token);
+      }
+
+      console.log("Login successful, token:", token);
     } catch (error) {
       console.error("Login failed", error);
     }

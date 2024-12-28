@@ -8,7 +8,7 @@ export interface User {
 export interface AuthContextType {
   user: User | null;
   register: (email: string, password: string) => Promise<void>;
-  login: (email: string, password: string) => Promise<void>;
+  login: (email: string, password: string) => Promise<{ access_token: string }>;
   logout: () => Promise<void>;
 }
 // The AuthContextType interface is used to define the shape of the context object that is returned by the useAuth hook.

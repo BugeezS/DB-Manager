@@ -3,7 +3,7 @@
 export async function POST(req) {
   try {
     // Parse the JSON body of the request
-    const { email, password } = await req.json();
+    const { username, password } = await req.json();
 
     // Perform the login logic here
     const response = await fetch(`${process.env.API_URL}/auth/login`, {
@@ -11,11 +11,12 @@ export async function POST(req) {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({ username, password }),
     });
 
     if (response.ok) {
       const data = await response.json();
+
       return new Response(JSON.stringify(data), { status: 200 });
     } else {
       return new Response(JSON.stringify({ message: "Invalid login" }), {
