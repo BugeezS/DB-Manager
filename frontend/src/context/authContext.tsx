@@ -50,7 +50,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       }
 
       setUser(data.user);
-      router.push("/auth/login"); // Redirect to login after registration
+      router.push("/login"); // Redirect to login after registration
     } catch (error) {
       console.error("Registration error:", error);
       throw error;

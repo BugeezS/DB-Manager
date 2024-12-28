@@ -2,37 +2,64 @@
 
 import { useAuth } from "@/context/authContext";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function RegisterPage() {
   const { register } = useAuth() || {};
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  const handleRegister = async () => {
+  const handleRegister = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+
     try {
-      await register?.(email, password);
+      console.log(register, "register");
+
+      if (!register) {
+        throw new Error("Register function not available");
+      }
+
+      await register(email, password);
+      router.push("/auth/login");
     } catch (error) {
-      console.error("Registration failed", error);
+      console.error("Registration failed:", error);
+      setError(error instanceof Error ? error.message : "Registration failed");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div>
+    <form onSubmit={handleRegister} className="flex flex-col gap-4 p-4">
+      {error && <div className="text-red-500">{error}</div>}
       <input
-        type="text"
+        type="email"
         placeholder="Email"
         value={email}
-        className="text-blue-700"
+        required
+        className="p-2 border rounded text-black"
         onChange={(e) => setEmail(e.target.value)}
       />
       <input
         type="password"
         placeholder="Password"
         value={password}
-        className="text-blue-700"
+        required
+        className="p-2 border rounded text-black"
         onChange={(e) => setPassword(e.target.value)}
       />
-      <button onClick={handleRegister}>Register</button>
-    </div>
+      <button
+        type="submit"
+        disabled={loading}
+        className="p-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:bg-gray-400"
+      >
+        {loading ? "Registering..." : "Register"}
+      </button>
+    </form>
   );
 }
