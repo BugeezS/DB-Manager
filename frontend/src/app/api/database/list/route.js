@@ -1,4 +1,4 @@
-// app/api/database/fetch/route.js
+// app/api/database/list/route.js
 
 export async function POST(request) {
   // Parse the request body as JSON

@@ -5,6 +5,10 @@ import { useRouter } from "next/navigation";
 export default function DashboardPage() {
   const router = useRouter();
 
+  useEffect(() => {
+    fetchDatabaseList();
+  }, []);
+
   const [Database, setDatabase] = useState(null);
 
   const fetchDatabaseList = async () => {
