@@ -26,6 +26,11 @@ export class AuthService {
   }
 
   async register(username: string, password: string) {
+    username = username.toLowerCase();
+    const existingUser = await this.findUserByUsername(username);
+    if (existingUser) {
+      throw new Error('User already exists');
+    }
     const hashedPassword = bcrypt.hashSync(password, 10);
     return await this.prisma.user.create({
       data: {
@@ -35,7 +40,6 @@ export class AuthService {
     });
   }
 
-  //TODO: Implement the findUserByUsername method to find a user by username.
   private async findUserByUsername(username: string) {
     return await this.prisma.user.findUnique({
       where: {
