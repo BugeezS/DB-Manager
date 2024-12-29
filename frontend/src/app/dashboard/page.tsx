@@ -1,9 +1,21 @@
 "use client";
-
+import { useEffect, useState, createContext, useContext } from "react";
 import { useRouter } from "next/navigation";
 
 export default function DashboardPage() {
   const router = useRouter();
+
+  const [Database, setDatabase] = useState(null);
+
+  const fetchDatabaseList = async () => {
+    try {
+      const response = await fetch("/api/database/list");
+      const data = await response.json();
+      setDatabase(data);
+    } catch (error) {
+      console.error("Failed to fetch database list:", error);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gray-100 text-black">
