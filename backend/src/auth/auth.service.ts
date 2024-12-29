@@ -12,6 +12,7 @@ export class AuthService {
 
   // The login method is defined to authenticate a user by username and password.
   async login(username: string, password: string) {
+    username = username.toLowerCase();
     const user = await this.findUserByUsername(username);
     console.log(user);
     console.log(bcrypt.compareSync(password, user.password));
