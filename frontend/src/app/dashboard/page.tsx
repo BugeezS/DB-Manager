@@ -2,9 +2,14 @@ import React from "react";
 
 const DashboardPage = () => {
   return (
-    <div className="min-h-screen bg-gray-100">
-      <header className="bg-blue-600 text-white p-4 shadow">
+    <div className="min-h-screen bg-gray-100 text-black">
+      <header className="bg-blue-600 text-white p-4 shadow flex flex-row items-center justify-between">
         <h1 className="text-2xl font-bold">Dashboard</h1>
+        <div>
+          <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            Profile
+          </button>
+        </div>
       </header>
       <main className="p-4">
         <section className="bg-white p-6 shadow-md rounded-lg">
