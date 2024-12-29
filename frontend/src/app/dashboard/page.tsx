@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState, createContext, useContext } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 export default function DashboardPage() {
@@ -9,13 +9,14 @@ export default function DashboardPage() {
     fetchDatabaseList();
   }, []);
 
-  const [Database, setDatabase] = useState(null);
+  const [Database, setDatabase] = useState<string[] | null>(null);
 
   const fetchDatabaseList = async () => {
     try {
       const response = await fetch("/api/database/list");
-      const data = await response.json();
-      setDatabase(data);
+      const { databases } = await response.json(); // Extract databases from the response
+      setDatabase(databases); // Set the array directly
+      console.log("Database list:", databases);
     } catch (error) {
       console.error("Failed to fetch database list:", error);
     }
@@ -23,17 +24,17 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-gray-100 text-black">
-      <header className="bg-blue-600 text-white p-4 shadow flex flex-row items-center justify-between">
+      <header className="bg-blue-600 text-white p-4 shadow flex justify-between">
         <h1 className="text-2xl font-bold">Dashboard</h1>
         <div>
           <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded hidden md:block"
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
             onClick={() => router.push("/profile")}
           >
             Profile
           </button>
           <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded hidden md:block"
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
             onClick={() => router.push("/settings")}
           >
             Settings
@@ -48,15 +49,20 @@ export default function DashboardPage() {
             application.
           </p>
         </section>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
-          <div className="bg-white p-4 shadow-md rounded-lg">
-            <h3 className="font-bold mb-2">Widget 1</h3>
-            <p>Some content goes here.</p>
-          </div>
-          <div className="bg-white p-4 shadow-md rounded-lg">
-            <h3 className="font-bold mb-2">Widget 2</h3>
-            <p>Another piece of content.</p>
-          </div>
+        <div>
+          {Database ? (
+            Database.length > 0 ? (
+              <ul>
+                {Database.map((dbName, index) => (
+                  <li key={index}>{dbName}</li>
+                ))}
+              </ul>
+            ) : (
+              <p>No databases available.</p>
+            )
+          ) : (
+            <p>Loading...</p>
+          )}
         </div>
       </main>
     </div>
