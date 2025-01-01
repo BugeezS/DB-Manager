@@ -24,6 +24,37 @@ export default function DashboardPage() {
     }
   };
 
+  const addDataBase = async (
+    dbName: string,
+    host: string,
+    port: string,
+    username: string,
+    password: string
+  ) => {
+    try {
+      const response = await fetch("/api/database/add", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          dbName,
+          host,
+          port,
+          username,
+          password,
+        }),
+      });
+
+      if (response.ok) {
+        fetchDatabaseList();
+        setIsOpen(false);
+      }
+    } catch (error) {
+      console.error("Failed to add database:", error);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-100 text-black">
       <header className="bg-blue-600 text-white p-4 shadow flex justify-between">
@@ -68,7 +99,17 @@ export default function DashboardPage() {
           )}
         </div>
       </main>
-      <AddDatabaseModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
+      <AddDatabaseModal
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        onDatabaseAdded={(
+          dbName: string,
+          host: string,
+          port: string,
+          username: string,
+          password: string
+        ) => addDataBase(dbName, host, port, username, password)}
+      />
     </div>
   );
 }

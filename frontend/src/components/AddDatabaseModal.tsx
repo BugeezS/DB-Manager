@@ -2,8 +2,20 @@ import React, { useState } from "react";
 
 interface AddDatabaseModalProps {
   isOpen: boolean;
+
   onClose: () => void;
-  onDatabaseAdded: () => void;
+
+  onDatabaseAdded: (
+    dbName: string,
+
+    host: string,
+
+    port: string,
+
+    username: string,
+
+    password: string
+  ) => void;
 }
 
 export const AddDatabaseModal: React.FC<AddDatabaseModalProps> = ({
@@ -32,7 +44,13 @@ export const AddDatabaseModal: React.FC<AddDatabaseModalProps> = ({
       });
 
       if (response.ok) {
-        onDatabaseAdded();
+        onDatabaseAdded(
+          formData.name,
+          formData.host,
+          formData.port,
+          formData.username,
+          formData.password
+        );
         onClose();
       }
     } catch (error) {
