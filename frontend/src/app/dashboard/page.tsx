@@ -1,4 +1,5 @@
 "use client";
+
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { AddDatabaseModal } from "@/components/AddDatabaseModal";
@@ -16,8 +17,8 @@ export default function DashboardPage() {
   const fetchDatabaseList = async () => {
     try {
       const response = await fetch("/api/database/list");
-      const { databases } = await response.json(); // Extract databases from the response
-      setDatabase(databases); // Set the array directly
+      const { databases } = await response.json();
+      setDatabase(databases);
       console.log("Database list:", databases);
     } catch (error) {
       console.error("Failed to fetch database list:", error);
@@ -37,33 +38,23 @@ export default function DashboardPage() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          name,
-          host,
-          port,
-          username,
-          password,
-        }),
+        body: JSON.stringify({ name, host, port, username, password }),
       });
 
       if (!response.ok) {
-        // Log detailed error info from backend
         const errorResponse = await response.text();
         console.error("Error response from backend:", errorResponse);
-
-        // Throwing an error so that the frontend can still handle it
         throw new Error(
           `Backend responded with ${response.status}: ${errorResponse}`
         );
       }
 
       const data = await response.json();
-      fetchDatabaseList(); // Refresh the database list
+      fetchDatabaseList();
       setIsOpen(false);
-      console.log("Database added successfully", data); // Log success
+      console.log("Database added successfully", data);
     } catch (error) {
       console.error("Failed to add database:", error);
-      // Show detailed error message to help debugging
       if (error instanceof Error) {
         alert(`Error: ${error.message}`);
       } else {
@@ -74,63 +65,73 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-gray-100 text-black">
-      <header className="bg-blue-600 text-white p-4 shadow flex justify-between">
+      {/* Header */}
+      <header className="bg-blue-600 text-white p-4 shadow-md flex justify-between items-center">
         <h1 className="text-2xl font-bold">Dashboard</h1>
-        <div>
+        <div className="flex space-x-3">
           <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            className="bg-blue-500 hover:bg-blue-700 transition text-white font-semibold py-2 px-4 rounded"
             onClick={() => router.push("/profile")}
           >
             Profile
           </button>
           <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            className="bg-blue-500 hover:bg-blue-700 transition text-white font-semibold py-2 px-4 rounded"
             onClick={() => router.push("/settings")}
           >
             Settings
           </button>
-          <button onClick={() => setIsOpen(!isOpen)}>Add Database</button>
+          <button
+            className="bg-green-500 hover:bg-green-700 transition text-white font-semibold py-2 px-4 rounded"
+            onClick={() => setIsOpen(true)}
+          >
+            Add Database
+          </button>
         </div>
       </header>
-      <main className="p-4">
-        <section className="bg-white p-6 shadow-md rounded-lg">
-          <h2 className="text-xl font-semibold mb-4">Welcome</h2>
+
+      {/* Main Content */}
+      <main className="p-6">
+        {/* Welcome Section */}
+        <section className="bg-white p-6 shadow-sm rounded-lg mb-6">
+          <h2 className="text-xl font-semibold mb-2">Welcome</h2>
           <p>
-            This is your dashboard. Use it to monitor and manage your
-            application.
+            Monitor and manage your application seamlessly from your dashboard.
           </p>
         </section>
-        <div className="mt-6">
+
+        {/* Database List */}
+        <div>
           {Database ? (
             Database.length > 0 ? (
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 {Database.map((dbName, index) => (
                   <div
                     key={index}
-                    className="bg-white p-4 shadow-md rounded-lg border border-gray-200"
+                    className="bg-white p-5 shadow-md rounded-lg border border-gray-200 hover:shadow-lg transition"
                   >
-                    <h3 className="text-lg font-semibold">{dbName}</h3>
+                    <h3 className="text-lg font-bold text-gray-800">
+                      {dbName}
+                    </h3>
                   </div>
                 ))}
               </div>
             ) : (
-              <p>No databases available.</p>
+              <p className="text-gray-500">No databases available.</p>
             )
           ) : (
-            <p>Loading...</p>
+            <p className="text-gray-500">Loading databases...</p>
           )}
         </div>
       </main>
+
+      {/* Modal */}
       <AddDatabaseModal
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
-        onDatabaseAdded={(
-          dbName: string,
-          host: string,
-          port: string,
-          username: string,
-          password: string
-        ) => addDataBase(dbName, host, port, username, password)}
+        onDatabaseAdded={(name, host, port, username, password) =>
+          addDataBase(name, host, port, username, password)
+        }
       />
     </div>
   );
