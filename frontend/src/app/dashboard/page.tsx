@@ -25,7 +25,7 @@ export default function DashboardPage() {
   };
 
   const addDataBase = async (
-    dbName: string,
+    name: string,
     host: string,
     port: string,
     username: string,
@@ -38,7 +38,7 @@ export default function DashboardPage() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          dbName,
+          name,
           host,
           port,
           username,
@@ -46,12 +46,29 @@ export default function DashboardPage() {
         }),
       });
 
-      if (response.ok) {
-        fetchDatabaseList();
-        setIsOpen(false);
+      if (!response.ok) {
+        // Log detailed error info from backend
+        const errorResponse = await response.text();
+        console.error("Error response from backend:", errorResponse);
+
+        // Throwing an error so that the frontend can still handle it
+        throw new Error(
+          `Backend responded with ${response.status}: ${errorResponse}`
+        );
       }
+
+      const data = await response.json();
+      fetchDatabaseList(); // Refresh the database list
+      setIsOpen(false);
+      console.log("Database added successfully", data); // Log success
     } catch (error) {
       console.error("Failed to add database:", error);
+      // Show detailed error message to help debugging
+      if (error instanceof Error) {
+        alert(`Error: ${error.message}`);
+      } else {
+        alert("An unknown error occurred");
+      }
     }
   };
 

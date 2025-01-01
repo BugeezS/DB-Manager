@@ -35,24 +35,14 @@ export const AddDatabaseModal: React.FC<AddDatabaseModalProps> = ({
     e.preventDefault();
 
     try {
-      const response = await fetch("/api/database/add", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-
-      if (response.ok) {
-        onDatabaseAdded(
-          formData.name,
-          formData.host,
-          formData.port,
-          formData.username,
-          formData.password
-        );
-        onClose();
-      }
+      onDatabaseAdded(
+        formData.name,
+        formData.host,
+        formData.port,
+        formData.username,
+        formData.password
+      );
+      onClose();
     } catch (error) {
       console.error("Failed to add database:", error);
     }
