@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { AddDatabaseModal } from "@/components/AddDatabaseModal";
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -10,7 +11,7 @@ export default function DashboardPage() {
   }, []);
 
   const [Database, setDatabase] = useState<string[] | null>(null);
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
 
   const fetchDatabaseList = async () => {
     try {
@@ -40,7 +41,7 @@ export default function DashboardPage() {
           >
             Settings
           </button>
-          <button onClick={() => setIsOpen(!isOpen)}>&times;</button>
+          <button onClick={() => setIsOpen(!isOpen)}>Add Database</button>
         </div>
       </header>
       <main className="p-4">
@@ -66,42 +67,8 @@ export default function DashboardPage() {
             <p>Loading...</p>
           )}
         </div>
-        {isOpen && (
-          <>
-            {/* Overlay */}
-            <div
-              className="fixed inset-0 bg-black bg-opacity-50 z-40"
-              onClick={() => setIsOpen(false)}
-            />
-
-            {/* Modal */}
-            <div className="fixed inset-0 flex items-center justify-center z-50">
-              <div className="bg-white p-6 rounded-lg shadow-xl max-w-md w-full mx-4">
-                <div className="flex justify-between items-center mb-4">
-                  <h2 className="text-xl font-bold">Modal Title</h2>
-                  <button
-                    onClick={() => setIsOpen(false)}
-                    className="text-gray-500 hover:text-gray-700"
-                  >
-                    ×
-                  </button>
-                </div>
-                <div className="mb-4">
-                  <p>Modal content goes here</p>
-                </div>
-                <div className="flex justify-end">
-                  <button
-                    onClick={() => setIsOpen(false)}
-                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                  >
-                    Close
-                  </button>
-                </div>
-              </div>
-            </div>
-          </>
-        )}
       </main>
+      <AddDatabaseModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
     </div>
   );
 }
