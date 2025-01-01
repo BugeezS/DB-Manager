@@ -100,14 +100,19 @@ export default function DashboardPage() {
             application.
           </p>
         </section>
-        <div>
+        <div className="mt-6">
           {Database ? (
             Database.length > 0 ? (
-              <ul>
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {Database.map((dbName, index) => (
-                  <li key={index}>{dbName}</li>
+                  <div
+                    key={index}
+                    className="bg-white p-4 shadow-md rounded-lg border border-gray-200"
+                  >
+                    <h3 className="text-lg font-semibold">{dbName}</h3>
+                  </div>
                 ))}
-              </ul>
+              </div>
             ) : (
               <p>No databases available.</p>
             )
