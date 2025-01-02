@@ -65,41 +65,8 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-gray-100 text-black">
-      {/* Header */}
-      <header className="bg-blue-600 text-white p-4 shadow-md flex justify-between items-center">
-        <h1 className="text-2xl font-bold">Dashboard</h1>
-        <div className="flex space-x-3">
-          <button
-            className="bg-blue-500 hover:bg-blue-700 transition text-white font-semibold py-2 px-4 rounded"
-            onClick={() => router.push("/profile")}
-          >
-            Profile
-          </button>
-          <button
-            className="bg-blue-500 hover:bg-blue-700 transition text-white font-semibold py-2 px-4 rounded"
-            onClick={() => router.push("/settings")}
-          >
-            Settings
-          </button>
-          <button
-            className="bg-green-500 hover:bg-green-700 transition text-white font-semibold py-2 px-4 rounded"
-            onClick={() => setIsOpen(true)}
-          >
-            Add Database
-          </button>
-        </div>
-      </header>
-
       {/* Main Content */}
       <main className="p-6">
-        {/* Welcome Section */}
-        <section className="bg-white p-6 shadow-sm rounded-lg mb-6">
-          <h2 className="text-xl font-semibold mb-2">Welcome</h2>
-          <p>
-            Monitor and manage your application seamlessly from your dashboard.
-          </p>
-        </section>
-
         {/* Database List */}
         <div>
           {Database ? (
