@@ -19,7 +19,6 @@ export default function DashboardPage() {
       const response = await fetch("/api/database/list");
       const { databases } = await response.json();
       setDatabase(databases);
-      console.log("Database list:", databases);
     } catch (error) {
       console.error("Failed to fetch database list:", error);
     }
@@ -49,10 +48,9 @@ export default function DashboardPage() {
         );
       }
 
-      const data = await response.json();
+      await response.json();
       fetchDatabaseList();
       setIsOpen(false);
-      console.log("Database added successfully", data);
     } catch (error) {
       console.error("Failed to add database:", error);
       if (error instanceof Error) {
@@ -64,22 +62,30 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 text-black">
+    <div className="min-h-screen bg-gray-100 text-gray-900">
       {/* Main Content */}
-      <main className="p-6">
+      <main className="container mx-auto px-4 py-6 grid grid-cols-1 lg:grid-cols-4 gap-6">
         {/* Database List */}
-        <div>
+        <section className="col-span-3">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl font-bold">Databases</h2>
+            <button
+              onClick={() => setIsOpen(true)}
+              className="bg-blue-600 text-white px-4 py-2 rounded shadow hover:bg-blue-700 transition"
+            >
+              Add Database
+            </button>
+          </div>
+
           {Database ? (
             Database.length > 0 ? (
-              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {Database.map((dbName, index) => (
                   <div
                     key={index}
-                    className="bg-white p-5 shadow-md rounded-lg border border-gray-200 hover:shadow-lg transition"
+                    className="bg-white p-4 rounded-lg shadow hover:shadow-lg transition border border-gray-200"
                   >
-                    <h3 className="text-lg font-bold text-gray-800">
-                      {dbName}
-                    </h3>
+                    <h3 className="text-lg font-bold">{dbName}</h3>
                   </div>
                 ))}
               </div>
@@ -89,7 +95,13 @@ export default function DashboardPage() {
           ) : (
             <p className="text-gray-500">Loading databases...</p>
           )}
-        </div>
+        </section>
+
+        {/* Placeholder for Member List */}
+        <section className="bg-white p-6 rounded-lg shadow border border-gray-200">
+          <h2 className="text-xl font-bold mb-4">Member List</h2>
+          <p className="text-gray-600">This feature is under development.</p>
+        </section>
       </main>
 
       {/* Modal */}
