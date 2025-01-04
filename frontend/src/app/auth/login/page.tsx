@@ -21,6 +21,24 @@ export default function LoginPage() {
     try {
       console.log("Attempting login with:", email, password);
 
+      //Sanitize Data
+      if (!email || !password) {
+        throw new Error("Invalid email or password");
+      }
+
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+
+      if (!emailRegex.test(email)) {
+        throw new Error("Invalid email format");
+      }
+
+      if (!passwordRegex.test(password)) {
+        throw new Error(
+          "Password must be at least 8 characters long and contain both letters and numbers"
+        );
+      }
+
       const response = await login?.(email, password);
 
       if (response?.access_token) {
